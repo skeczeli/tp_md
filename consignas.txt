@@ -1,0 +1,10 @@
+usamos listas de adyacencia porque es disperso.
+
+- encontrar los caminos más cortos entre dos usuarios:
+
+- identificar usuarios y conexiones críticas para la conectividad de la red: 
+Usuarios críticos: por parámetro. Te dicen “este es crítico”. Los guardamos en una lista.
+Conexiones críticas (bridges): si desaparecen, hay gran reducción en alcance para usuarios críticos.
+Un método que busque conexiones críticas para un usuario crítico dado. Devuelve una lista de aristas. El alcance se define como la cantidad de usuarios conectados (indirectamente o no) a cierto usuario. Usamos el algoritmo de Tarjan. O(V + E)
+
+- Esto incluye analizar el impacto en la red si alguno de estos usuarios o conexiones desaparece.
