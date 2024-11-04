@@ -1,3 +1,17 @@
+Un reporte corto en formato PDF que incluya:
+
+- Una explicación de las decisiones tomadas respecto a la representación del grafo y el algoritmo aplicado, justificando por qué estas opciones son adecuadas para resolver el problema.
+  
+- Ejemplos detallados de la ejecución de los algoritmos en casos concretos, explicando paso a paso el proceso de resolución.
+  
+- Resultados de pruebas de performance usando la herramienta `timeit`: incluyan pruebas comparativas en grafos de diferentes tamaños y densidades (por ejemplo, grafos pequeños de hasta 10 nodos, medianos de 50 a 100 nodos y grandes de 500 a 1000 nodos o más, si el tiempo de ejecución lo permite).
+
+  - Reporten los tiempos de ejecución.
+  - Analicen el comportamiento del algoritmo en términos de eficiencia, identificando su complejidad temporal y espacial en función del tamaño del grafo.
+  - Describan las limitaciones observadas en la implementación y sugieran posibles optimizaciones o variantes para mejorar la performance, si fuera necesario.
+
+---
+
 usamos listas de adyacencia porque es disperso.
 
 - encontrar los caminos más cortos entre dos usuarios:
