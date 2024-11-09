@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class AdjacencyListGraph:
     def __init__(self):
         self.adjacency_list = {}
@@ -80,12 +83,12 @@ class AdjacencyListGraph:
                 dfs(vertex)
 
         return bridges
+    
 
     def bridge_impact(self, start, edge, orden_puente=0, visited=None):
         if visited is None:
             visited = set()
         visited.add(start)
-        print(f"Visitando nodo en evaluate_impact: {start}")
 
         for neighbor in self.get_adjacency_list(start):
             if neighbor not in visited:
@@ -102,7 +105,6 @@ class AdjacencyListGraph:
         if visited is None:
             visited = set()
         visited.add(start)
-        print(f"Visitando nodo en counter_dfs: {start}")
 
         # Iniciar el contador en 1 para contar el nodo actual
         total_counter = 1
@@ -114,6 +116,7 @@ class AdjacencyListGraph:
         
         return total_counter
     
+
     # alternativa que debería ser más eficiente:
     def get_connected_component(self, start_node):
         visited = set()
@@ -125,7 +128,6 @@ class AdjacencyListGraph:
         dfs(start_node)
         return visited
 
-    
     def get_bridges_and_impacts(self, start_node): #Busca los puentes para la componente del start_node
         connected_component = self.get_connected_component(start_node)
         depth = 0
@@ -136,6 +138,7 @@ class AdjacencyListGraph:
         impacts = {}  # Dictionary to store impact of each bridge
 
         total_nodes = len(connected_component)
+        if total_nodes == 1: return [], {} 
         def dfs(u):
             nonlocal depth
             disc[u] = low[u] = depth
@@ -151,8 +154,7 @@ class AdjacencyListGraph:
                         # (u, v) is a bridge
                         bridges.append((u, v))
                         # Impact is the size of the subtree rooted at v
-                        impact_percentage = (child_subtree_size / total_nodes) * 100
-                        impacts[(u, v)] = impact_percentage
+                        impacts[(u, v)] = (child_subtree_size / total_nodes)*100
 
                     subtree_size += child_subtree_size
 
@@ -160,9 +162,36 @@ class AdjacencyListGraph:
                     low[u] = min(low[u], disc[v])
             return subtree_size
 
-        for vertex in self.adjacency_list:
-            if disc[vertex] == -1:
-                dfs(vertex)
+        if disc[start_node] == -1:
+            dfs(start_node)
 
         return bridges, impacts
+    
 
+
+    
+
+    def shortest_path(self, start, end):
+            # Verifica si los usuarios existen en el grafo
+            if start not in self.adjacency_list or end not in self.adjacency_list:
+                return None  # Retorna None si alguno de los nodos no existe
+
+            # Estructuras para la búsqueda
+            visited = set()  # Conjunto para mantener los nodos visitados
+            queue = deque([(start, [start])])  # Cola de BFS que almacena el nodo actual y el camino hasta él
+
+            while queue:
+                current, path = queue.popleft()
+                visited.add(current)
+
+                # Si encontramos el nodo final, devolvemos el camino
+                if current == end:
+                    return path
+
+                # Explora los nodos adyacentes no visitados
+                for neighbor in self.adjacency_list[current]:
+                    if neighbor not in visited:
+                        queue.append((neighbor, path + [neighbor]))
+                        visited.add(neighbor)
+
+            return None  # Retorna None si no hay camino entre los nodos

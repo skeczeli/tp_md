@@ -12,7 +12,7 @@ g.add_vertex('I')
 g.add_vertex('J')
 g.add_vertex('K')
 g.add_vertex('L')
-g.add_edge('A', 'B')
+g.add_edge('B', 'A')
 #g.add_edge('A', 'D') #ciclo
 g.add_edge('B', 'C')
 g.add_edge('B', 'D')
@@ -24,11 +24,6 @@ g.add_edge('H', 'I')
 g.add_edge('I', 'K')
 g.add_edge('I', 'J')
 g.add_edge('I', 'L')
-puentes = g.get_bridges()
-print(puentes)
-puente_1 = puentes[-4]
-user = 'A'
-kept, lost = g.bridge_impact(user, puente_1)
-#print(kept, lost)
-print(f"Sin {puente_1}, {user} perdería el {(lost / (lost + kept))*100}% de alcance")
-print(g.get_bridges_and_impacts(user)[1])
+
+# Encuentra el camino más corto entre 'A' y 'D'
+print(g.shortest_path('A', 'E'))  # Posible salida: ['A', 'B', 'C', 'D']
