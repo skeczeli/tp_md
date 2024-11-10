@@ -39,8 +39,5 @@ g.add_edge(I, L)
 puentes = g.get_bridges()
 print(puentes)
 puente_1 = puentes[-4]
-user = A
-kept, lost = g.bridge_impact(user, puente_1)
-#print(kept, lost)
-print(f"Sin {puente_1}, {user} perdería el {(lost / (lost + kept))*100}% de alcance")
+user = F
 print(g.get_bridges_and_impacts(user)[1])
