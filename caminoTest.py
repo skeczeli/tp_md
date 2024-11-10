@@ -25,7 +25,7 @@ g.add_vertex(J)
 g.add_vertex(K)
 g.add_vertex(L)
 g.add_edge(B, A)
-g.add_edge(A, D) #ciclo
+#g.add_edge(A, D) #ciclo
 g.add_edge(B, C)
 g.add_edge(B, D)
 g.add_edge(D, E)
@@ -38,4 +38,4 @@ g.add_edge(I, J)
 g.add_edge(I, L)
 
 # Encuentra el camino más corto entre 'A' y 'D'
-print(g.shortest_path('A', 'D'))  # Posible salida: ['A', 'B', 'C', 'D']
+print(g.shortest_path(A, D))  # Posible salida: ['A', 'B', 'C', 'D']
