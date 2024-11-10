@@ -1,4 +1,17 @@
 from collections import deque
+class Vertex:
+    def __init__(self, name, is_critical=False):
+        self.name = name
+        self.is_critical = is_critical
+
+    def __repr__(self):
+        return f"{self.name}"
+
+    def __eq__(self, other):
+        return isinstance(other, Vertex) and self.name == other.name
+    
+    def __hash__(self):
+        return hash(self.name)
 
 
 class AdjacencyListGraph:
@@ -7,19 +20,21 @@ class AdjacencyListGraph:
         self.critical_users = {}
         self._edge_count = 0
 
-    def add_vertex(self, v, isCritical=False):
+    def add_vertex(self, v, is_critical=False):
+       # o trabajar internamente con v = Vertex(v, is_critical) y ext como antes? -> diccionario (nombre, vertex)... dont love it tho
         if v not in self.adjacency_list:
             self.adjacency_list[v] = []
-            if isCritical:
+            if v.is_critical:
                 self.critical_users[v] = v
 
     def delete_vertex(self, v):
         if v in self.adjacency_list:
             for adj_vertex in self.adjacency_list[v]:
-                self.adjacency_list[adj_vertex].remve(v)
+                self.adjacency_list[adj_vertex].remove(v)
                 self._edge_count -= 1
             del self.adjacency_list[v]
             del self.critical_users[v]
+        else: raise Exception(f"No existe {v}")
     
     def add_edge(self, u, v):
         if u in self.adjacency_list and v in self.adjacency_list:
@@ -34,6 +49,7 @@ class AdjacencyListGraph:
                 self.adjacency_list[u].remove(v)
                 self.adjacency_list[v].remove(u)
                 self._edge_count -= 1
+        else: raise Exception(f"No existe {(u, v)}")
 
     def exists_edge(self, u, v):
         return u in self.adjacency_list and v in self.adjacency_list[u]
@@ -45,9 +61,7 @@ class AdjacencyListGraph:
         return self._edge_count
 
     def get_vertex(self, v):
-        if v in self.adjacency_list:
-            return v
-        return None
+        return self.adjacency_list.get(v, None)
 
     def get_adjacency_list(self, v):
         return self.adjacency_list.get(v, []) 
@@ -172,15 +186,14 @@ class AdjacencyListGraph:
     
 
     def shortest_path(self, start, end):
-            # Verifica si los usuarios existen en el grafo
             if start not in self.adjacency_list or end not in self.adjacency_list:
                 return None  # Retorna None si alguno de los nodos no existe
 
-            # Estructuras para la búsqueda
-            visited = set()  # Conjunto para mantener los nodos visitados
-            queue = deque([(start, [start])])  # Cola de BFS que almacena el nodo actual y el camino hasta él
 
-            while queue:
+            visited = set()  # Conjunto para mantener los nodos visitados
+            queue = deque([(start, [start])])  #Queue de BFS que almacena el nodo actual y el camino hasta él
+
+            while len(queue) > 0:
                 current, path = queue.popleft()
                 visited.add(current)
 
