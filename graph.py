@@ -1,18 +1,17 @@
 from collections import deque
 class Vertex:
-    def __init__(self, name, is_critical=False):
-        self.name = name
+    def __init__(self, user, is_critical=False):
+        self.user = user
         self.is_critical = is_critical
 
     def __repr__(self):
-        return f"{self.name}"
-
+        return f"{self.user}"
+    
     def __eq__(self, other):
-        return isinstance(other, Vertex) and self.name == other.name
+        return isinstance(other, Vertex) and self.user == other.user
     
     def __hash__(self):
-        return hash(self.name)
-
+        return hash(self.user)
 
 class AdjacencyListGraph:
     def __init__(self):
@@ -20,8 +19,7 @@ class AdjacencyListGraph:
         self.critical_users = {}
         self._edge_count = 0
 
-    def add_vertex(self, v, is_critical=False):
-       # o trabajar internamente con v = Vertex(v, is_critical) y ext como antes? -> diccionario (nombre, vertex)... dont love it tho
+    def add_vertex(self, v):
         if v not in self.adjacency_list:
             self.adjacency_list[v] = []
             if v.is_critical:
@@ -208,3 +206,35 @@ class AdjacencyListGraph:
                         visited.add(neighbor)
 
             return None  # Retorna None si no hay camino entre los nodos
+    
+
+    def connected_components(self, user):
+        components = []
+        visited = set()  # Keep track of all visited nodes
+        vertex_amount = 1
+        visited.add(user)  
+        def dfs(u, visited, component, excluded_edges):
+            component[0] += 1
+            visited.add(u)
+            if u.is_critical:           # Mark the node as visited
+                component.append(u)       # Add node to the current component
+            for v in self.get_adjacency_list(u):
+                # Check if the edge (u, v) or (v, u) is in the list of excluded edges
+                if v not in visited and (u, v) not in excluded_edges and (v, u) not in excluded_edges:
+                    dfs(v, visited, component, excluded_edges)
+
+        # Iterate over neighbors to start DFS for each component
+        for neighbour in self.get_adjacency_list(user):
+            if neighbour in visited:
+                continue
+            component = []  # Stores nodes for the current connected component
+            component.append(0)
+            dfs(neighbour, visited, component, self.get_adjacency_list(user))
+            components.append(component)
+            vertex_amount += component[0]
+
+        for list in components:
+            list[0] = f'{((vertex_amount - list[0]) / vertex_amount) * 100}%'
+
+        return components
+
